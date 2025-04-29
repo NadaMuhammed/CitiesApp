@@ -3,22 +3,27 @@ package com.example.cities.domain.useCase
 import com.example.cities.domain.model.City
 import javax.inject.Inject
 
-class BinarySearchUseCase @Inject constructor() {
+fun interface BinarySearchUseCase {
 
-    fun invoke(cities: List<City>, prefix: String): List<City> {
-        val startIdx = binarySearchStart(cities, prefix)
+    suspend fun invoke(input: Pair<List<City>, String>): List<City>
+}
+
+class BinarySearchUseCaseImpl @Inject constructor() : BinarySearchUseCase {
+
+    override suspend fun invoke(input: Pair<List<City>, String>): List<City> {
+        val startIdx = binarySearchStart(input.first, input.second)
 
         if (startIdx == -1) return emptyList()
 
         val results = mutableListOf<City>()
         var idx = startIdx
 
-        while (idx < cities.size && cities[idx].filteredName?.startsWith(
-                prefix,
+        while (idx < input.first.size && input.first[idx].filteredName?.startsWith(
+                input.second,
                 ignoreCase = true
             ) == true
         ) {
-            results.add(cities[idx])
+            results.add(input.first[idx])
             idx++
         }
 
