@@ -4,13 +4,13 @@ import com.example.cities.domain.model.City
 import com.example.cities.domain.repository.CitiesRepository
 import javax.inject.Inject
 
-class GetSortedUseCaseImpl @Inject constructor(
+class GetCitiesUseCase @Inject constructor(
     private val citiesRepository: CitiesRepository
-) : GetSortedCitiesUseCase {
+) {
 
-    override suspend fun invoke(): List<City>? {
+    suspend fun invoke(): List<City>? {
         return citiesRepository.getCities()?.sortedBy {
-            it.name
+            it.filteredName
         }
     }
 }

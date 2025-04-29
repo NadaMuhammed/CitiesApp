@@ -12,6 +12,7 @@ class CitiesMapperImpl @Inject constructor() : CitiesMapper {
             City(
                 country = it.country,
                 name = it.name,
+                filteredName = filterCityName(it.name ?: ""),
                 id = it.id,
                 coordinates = Coordinates(
                     lat = it.coordinates?.lat,
@@ -19,5 +20,18 @@ class CitiesMapperImpl @Inject constructor() : CitiesMapper {
                 )
             )
         }
+    }
+
+    private fun filterCityName(name: String): String {
+        // Filters By Removing White Spaces And Special Characters
+        val filteredName = name.trim()
+            .split(" ")
+            .joinToString("")
+            .replace(
+                "^[^A-Za-z]+".toRegex(),
+                ""
+            )
+
+        return filteredName.lowercase().ifEmpty { "~" }
     }
 }
