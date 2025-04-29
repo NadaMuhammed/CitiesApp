@@ -9,8 +9,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavHostController
-import com.example.cities.domain.model.City
 import com.example.cities.ui.component.ListComponent
 import com.example.cities.ui.component.LoadingComponent
 import com.example.cities.ui.component.SearchComponent
@@ -35,7 +33,11 @@ fun CitiesScreen(
                 searchQuery = it
             },
             onSearchClick = {
-
+                if (searchQuery.isEmpty()) {
+                    viewModel.getSortedCities()
+                } else {
+                    viewModel.searchForCity(searchQuery)
+                }
             }
         )
 
@@ -44,8 +46,8 @@ fun CitiesScreen(
                 LoadingComponent()
             }
 
-            is UiState.Success<*> -> {
-                val data = currentState.data as? List<City> ?: listOf()
+            is UiState.Success -> {
+                val data = currentState.data ?: listOf()
                 ListComponent(data)
             }
         }
