@@ -2,7 +2,6 @@ package com.example.cities.ui.viewModel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.cities.domain.model.City
 import com.example.cities.domain.useCase.GetCitiesUseCase
 import com.example.cities.domain.useCase.SearchForCityUseCase
 import com.example.cities.ui.util.UiState
@@ -16,19 +15,52 @@ import javax.inject.Inject
 
 @HiltViewModel
 class CitiesViewModel @Inject constructor(
-    private val getCitiesUseCase: GetCitiesUseCase
+    private val getCitiesUseCase: GetCitiesUseCase,
+    private val searchForCityUseCase: SearchForCityUseCase
 ) : ViewModel() {
 
     private val _cities: MutableStateFlow<UiState> = MutableStateFlow(UiState.Loading)
     val cities: StateFlow<UiState> = _cities.asStateFlow()
 
+    private val _searchQuery: MutableStateFlow<String?> = MutableStateFlow(null)
+    val searchQuery = _searchQuery.asStateFlow()
+
     fun getSortedCities() {
         viewModelScope.launch(Dispatchers.IO) {
+            _cities.emit(
+                UiState.Loading
+            )
+
             _cities.emit(
                 UiState.Success(
                     getCitiesUseCase.invoke()
                 )
             )
+        }
+    }
+
+    fun searchForCity(cityPrefix: String) {
+        viewModelScope.launch(Dispatchers.IO) {
+            if (searchQuery.value != cityPrefix) {
+                _cities.emit(
+                    UiState.Success(
+                        searchForCityUseCase.invoke(
+                            prefix = cityPrefix,
+                            list = when (cities.value) {
+                                is UiState.Success -> {
+                                    (cities.value as UiState.Success).data ?: listOf()
+                                }
+
+                                else -> {
+                                    listOf()
+                                }
+                            }
+                        )
+                    )
+                )
+
+                _searchQuery.value = cityPrefix
+            }
         }
     }
 }
