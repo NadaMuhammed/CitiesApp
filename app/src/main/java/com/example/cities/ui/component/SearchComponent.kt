@@ -49,7 +49,7 @@ fun SearchComponent(
         },
         singleLine = true,
         textStyle = TextStyle(fontSize = 14.sp),
-        trailingIcon = {
+        leadingIcon = {
             IconButton(
                 onClick = { keyboardController?.hide() }
             ) {

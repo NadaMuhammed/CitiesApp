@@ -9,4 +9,6 @@ sealed class UiState {
     data class Success(
         val data: List<City>?
     ) : UiState()
+
+    data object EmptyState : UiState()
 }
