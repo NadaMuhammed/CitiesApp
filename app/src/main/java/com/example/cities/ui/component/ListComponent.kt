@@ -6,11 +6,15 @@ import androidx.compose.runtime.Composable
 import com.example.cities.domain.model.City
 
 @Composable
-fun ListComponent(cities: List<City>?) {
+fun ListComponent(
+    cities: List<City>?,
+    onClick: (City?) -> Unit
+) {
     LazyColumn {
         items(cities ?: listOf()) { city ->
             CardComponent(
-                city
+                city,
+                onClick
             )
         }
     }

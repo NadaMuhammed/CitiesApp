@@ -2,4 +2,6 @@
     <string name="app_name">Cities</string>
     <string name="search_field_hint">Enter Country Name</string>
     <string name="search">Search</string>
+    <string name="city_display">%1$s %2$s</string>
+    <string name="city_coordinates">(%1$.4f, %2$.4f)</string>
 </resources>

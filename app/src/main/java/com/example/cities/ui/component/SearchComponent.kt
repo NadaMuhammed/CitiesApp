@@ -16,6 +16,7 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarColors
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -32,12 +33,18 @@ import com.example.cities.R
 fun SearchComponent(
     modifier: Modifier = Modifier,
     searchQuery: String,
-    onSearchQueryChange: (String) -> Unit,
-    onSearchClick: () -> Unit
+    onSearchQueryChange: (String) -> Unit
 ) {
     val keyboardController = LocalSoftwareKeyboardController.current
 
     TopAppBar(
+        colors = TopAppBarColors(
+            containerColor = Color.LightGray,
+            scrolledContainerColor = Color.LightGray,
+            navigationIconContentColor = Color.LightGray,
+            titleContentColor = Color.LightGray,
+            actionIconContentColor = Color.LightGray
+        ),
         title = {
             OutlinedTextField(
                 value = searchQuery,
@@ -49,7 +56,10 @@ fun SearchComponent(
                 placeholder = {
                     Text(
                         stringResource(R.string.search_field_hint),
-                        style = TextStyle(fontSize = 13.sp, color = Color.LightGray)
+                        style = TextStyle(
+                            fontSize = 13.sp,
+                            color = Color.LightGray
+                        )
                     )
                 },
                 singleLine = true,
@@ -65,7 +75,6 @@ fun SearchComponent(
                     IconButton(
                         onClick = {
                             keyboardController?.hide()
-                            onSearchClick()
                         },
                         modifier = Modifier.padding(end = 3.dp)
                     ) {
@@ -83,7 +92,6 @@ fun SearchComponent(
                 keyboardActions = KeyboardActions(
                     onDone = {
                         keyboardController?.hide()
-                        onSearchClick()
                     }
                 )
             )

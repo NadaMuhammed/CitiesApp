@@ -31,13 +31,7 @@ fun CitiesScreen(
             searchQuery = searchQuery,
             onSearchQueryChange = {
                 searchQuery = it
-            },
-            onSearchClick = {
-                if (searchQuery.isEmpty()) {
-                    viewModel.getSortedCities()
-                } else {
-                    viewModel.searchForCity(searchQuery)
-                }
+                viewModel.setSearchQuery(searchQuery)
             }
         )
 
@@ -47,8 +41,9 @@ fun CitiesScreen(
             }
 
             is UiState.Success -> {
-                val data = currentState.data ?: listOf()
-                ListComponent(data)
+                ListComponent(
+                    currentState.data ?: listOf(),
+                    {})
             }
         }
     }
