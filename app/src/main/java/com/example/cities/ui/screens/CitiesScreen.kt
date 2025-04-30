@@ -1,5 +1,7 @@
 package com.example.cities.ui.screens
 
+import android.content.Intent
+import android.net.Uri
 import androidx.compose.foundation.layout.Column
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -9,6 +11,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavHostController
+import com.example.cities.domain.model.City
 import com.example.cities.ui.component.ListComponent
 import com.example.cities.ui.component.LoadingComponent
 import com.example.cities.ui.component.SearchComponent
@@ -17,7 +21,8 @@ import com.example.cities.ui.viewModel.CitiesViewModel
 
 @Composable
 fun CitiesScreen(
-    viewModel: CitiesViewModel = hiltViewModel()
+    viewModel: CitiesViewModel = hiltViewModel(),
+    navHostController: NavHostController
 ) {
     LaunchedEffect(Unit) {
         viewModel.getSortedCities()
@@ -31,13 +36,7 @@ fun CitiesScreen(
             searchQuery = searchQuery,
             onSearchQueryChange = {
                 searchQuery = it
-            },
-            onSearchClick = {
-                if (searchQuery.isEmpty()) {
-                    viewModel.getSortedCities()
-                } else {
-                    viewModel.searchForCity(searchQuery)
-                }
+                viewModel.setSearchQuery(searchQuery)
             }
         )
 
@@ -47,9 +46,24 @@ fun CitiesScreen(
             }
 
             is UiState.Success -> {
-                val data = currentState.data ?: listOf()
-                ListComponent(data)
+                ListComponent(
+                    currentState.data ?: listOf(),
+                ) { city ->
+                    openCityInGoogleMaps(city, navHostController)
+                }
             }
         }
     }
+}
+
+private fun openCityInGoogleMaps(city: City?, navHostController: NavHostController) {
+    val lat = city?.coordinates?.lat
+    val lon = city?.coordinates?.lon
+    val name = city?.name ?: ""
+
+    val uri = Uri.parse("geo:$lat,$lon?q=$lat,$lon($name)")
+    val intent = Intent(Intent.ACTION_VIEW, uri).apply {
+        `package` = "com.google.android.apps.maps"
+    }
+    navHostController.context.startActivity(intent)
 }
