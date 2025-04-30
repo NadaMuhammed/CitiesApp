@@ -10,6 +10,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.example.cities.domain.model.City
 
@@ -26,7 +27,8 @@ fun LogoComponent(
     ) {
         Text(
             text = city.country ?: "",
-            color = Color.White
+            color = Color.White,
+            fontWeight = FontWeight.Bold
         )
     }
 }
