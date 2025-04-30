@@ -1,10 +1,8 @@
 package com.example.cities.ui.screens
 
 import android.content.Intent
-import android.net.Uri
 import androidx.compose.foundation.layout.Column
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -19,15 +17,13 @@ import com.example.cities.ui.component.LoadingComponent
 import com.example.cities.ui.component.SearchComponent
 import com.example.cities.ui.util.UiState
 import com.example.cities.ui.viewModel.CitiesViewModel
+import androidx.core.net.toUri
 
 @Composable
 fun CitiesScreen(
     viewModel: CitiesViewModel = hiltViewModel(),
     navHostController: NavHostController
 ) {
-    LaunchedEffect(Unit) {
-        viewModel.getSortedCities()
-    }
 
     var searchQuery by rememberSaveable { mutableStateOf("") }
     val cities by viewModel.cities.collectAsState()
@@ -66,7 +62,7 @@ private fun openCityInGoogleMaps(city: City?, navHostController: NavHostControll
     val lon = city?.coordinates?.lon
     val name = city?.name ?: ""
 
-    val uri = Uri.parse("geo:$lat,$lon?q=$lat,$lon($name)")
+    val uri = "geo:$lat,$lon?q=$lat,$lon($name)".toUri()
     val intent = Intent(Intent.ACTION_VIEW, uri).apply {
         `package` = "com.google.android.apps.maps"
     }

@@ -34,6 +34,7 @@ class CitiesViewModel @Inject constructor(
     val searchQuery = _searchQuery.asStateFlow()
 
     init {
+        getSortedCities()
         observeSearchQuery()
     }
 
@@ -43,15 +44,16 @@ class CitiesViewModel @Inject constructor(
                 .debounce(300)
                 .distinctUntilChanged()
                 .collect { query ->
-                    _cities.emit(UiState.Loading)
-                    val result = if (query.isNullOrEmpty()) {
-                        _allCities.value
-                    } else {
-                        searchForCityUseCase.invoke(
-                            Pair(allCities.value ?: listOf(), query)
-                        )
+                    allCities.value?.let {
+                        val result = if (query.isNullOrEmpty()) {
+                            _allCities.value
+                        } else {
+                            searchForCityUseCase.invoke(
+                                Pair(allCities.value ?: listOf(), query)
+                            )
+                        }
+                        _cities.emit(UiState.Success(result))
                     }
-                    _cities.emit(UiState.Success(result))
                 }
         }
     }
