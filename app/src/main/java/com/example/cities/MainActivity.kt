@@ -1,7 +1,6 @@
 package com.example.cities
 
 import android.annotation.SuppressLint
-import android.net.Uri
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -10,7 +9,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Scaffold
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import com.example.cities.ui.screens.CitiesScreen
+import androidx.navigation.compose.rememberNavController
+import com.example.cities.navigation.AppNavigation
 import com.example.cities.ui.theme.CitiesTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -27,7 +27,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     containerColor = Color.LightGray
                 ) {
-                    CitiesScreen()
+                    AppNavigation(rememberNavController())
                 }
             }
         }
