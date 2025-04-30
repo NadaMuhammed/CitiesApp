@@ -12,6 +12,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.example.cities.R
 import com.example.cities.domain.model.City
@@ -45,7 +47,8 @@ fun CardComponent(
                         R.string.city_display,
                         city.name ?: "",
                         city.country ?: ""
-                    )
+                    ),
+                    fontWeight = FontWeight.Bold
                 )
 
                 Text(

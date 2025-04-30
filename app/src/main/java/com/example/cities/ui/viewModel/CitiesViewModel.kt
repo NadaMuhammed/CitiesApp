@@ -59,9 +59,12 @@ class CitiesViewModel @Inject constructor(
     fun getSortedCities() {
         viewModelScope.launch(ioDispatcher) {
             _cities.emit(UiState.Loading)
-            val cities = getCitiesUseCase.invoke()
-            _allCities.emit(cities)
-            _cities.emit(UiState.Success(cities))
+            getCitiesUseCase.invoke()?.let { cities ->
+                _allCities.emit(cities)
+                _cities.emit(UiState.Success(cities))
+            } ?: run {
+                _cities.emit(UiState.EmptyState)
+            }
         }
     }
 

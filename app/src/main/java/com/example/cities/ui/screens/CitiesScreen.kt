@@ -13,6 +13,7 @@ import androidx.compose.runtime.setValue
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.example.cities.domain.model.City
+import com.example.cities.ui.component.EmptyComponent
 import com.example.cities.ui.component.ListComponent
 import com.example.cities.ui.component.LoadingComponent
 import com.example.cities.ui.component.SearchComponent
@@ -51,6 +52,10 @@ fun CitiesScreen(
                 ) { city ->
                     openCityInGoogleMaps(city, navHostController)
                 }
+            }
+
+            is UiState.EmptyState -> {
+                EmptyComponent()
             }
         }
     }
