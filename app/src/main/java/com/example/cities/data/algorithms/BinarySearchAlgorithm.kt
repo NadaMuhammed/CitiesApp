@@ -1,29 +1,25 @@
-package com.example.cities.domain.useCase
+package com.example.cities.data.algorithms
 
+import com.example.cities.domain.algorithms.SearchAlgorithm
 import com.example.cities.domain.model.City
 import javax.inject.Inject
 
-fun interface BinarySearchUseCase {
+class BinarySearchAlgorithm @Inject constructor() : SearchAlgorithm {
 
-    suspend fun invoke(input: Pair<List<City>, String>): List<City>
-}
-
-class BinarySearchUseCaseImpl @Inject constructor() : BinarySearchUseCase {
-
-    override suspend fun invoke(input: Pair<List<City>, String>): List<City> {
-        val startIdx = binarySearchStart(input.first, input.second)
+    override suspend fun search(list: List<City>, value: String): List<City> {
+        val startIdx = binarySearchStart(list, value)
 
         if (startIdx == -1) return emptyList()
 
         val results = mutableListOf<City>()
         var idx = startIdx
 
-        while (idx < input.first.size && input.first[idx].filteredName?.startsWith(
-                input.second,
+        while (idx < list.size && list[idx].filteredName?.startsWith(
+                value,
                 ignoreCase = true
             ) == true
         ) {
-            results.add(input.first[idx])
+            results.add(list[idx])
             idx++
         }
 

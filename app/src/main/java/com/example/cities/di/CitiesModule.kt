@@ -1,13 +1,13 @@
 package com.example.cities.di
 
+import com.example.cities.data.algorithms.BinarySearchAlgorithm
 import com.example.cities.data.local.CitiesLocalDataSource
 import com.example.cities.data.local.CitiesLocalDataSourceImpl
 import com.example.cities.data.mapper.CitiesMapper
 import com.example.cities.data.mapper.CitiesMapperImpl
 import com.example.cities.data.repository.CitiesRepositoryImpl
+import com.example.cities.domain.algorithms.SearchAlgorithm
 import com.example.cities.domain.repository.CitiesRepository
-import com.example.cities.domain.useCase.BinarySearchUseCase
-import com.example.cities.domain.useCase.BinarySearchUseCaseImpl
 import com.example.cities.domain.useCase.GetCitiesUseCase
 import com.example.cities.domain.useCase.GetCitiesUseCaseImpl
 import com.example.cities.domain.useCase.SearchForCityUseCase
@@ -59,8 +59,8 @@ interface CitiesModule {
 
     @Binds
     fun bindBinarySearch(
-        binarySearchUseCaseImpl: BinarySearchUseCaseImpl
-    ): BinarySearchUseCase
+        binarySearchAlgorithm: BinarySearchAlgorithm
+    ): SearchAlgorithm
 }
 
 @Module

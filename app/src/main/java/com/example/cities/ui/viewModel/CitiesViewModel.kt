@@ -49,7 +49,8 @@ class CitiesViewModel @Inject constructor(
                             _allCities.value
                         } else {
                             searchForCityUseCase.invoke(
-                                Pair(allCities.value ?: listOf(), query)
+                                allCities.value ?: listOf(),
+                                query
                             )
                         }
                         _cities.emit(UiState.Success(result))
@@ -58,7 +59,7 @@ class CitiesViewModel @Inject constructor(
         }
     }
 
-    fun getSortedCities() {
+    private fun getSortedCities() {
         viewModelScope.launch(ioDispatcher) {
             _cities.emit(UiState.Loading)
             getCitiesUseCase.invoke()?.let { cities ->

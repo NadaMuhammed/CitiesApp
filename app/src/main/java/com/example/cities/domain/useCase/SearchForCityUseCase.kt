@@ -1,18 +1,22 @@
 package com.example.cities.domain.useCase
 
+import com.example.cities.domain.algorithms.SearchAlgorithm
 import com.example.cities.domain.model.City
 import javax.inject.Inject
 
 fun interface SearchForCityUseCase {
 
-    suspend fun invoke(input: Pair<List<City>, String>): List<City>
+    suspend fun invoke(cities: List<City>, prefix: String): List<City>
 }
 
 class SearchForCityUseCaseImpl @Inject constructor(
-    private val binarySearchUseCase: BinarySearchUseCase
+    private val binarySearchAlgorithm: SearchAlgorithm
 ) : SearchForCityUseCase {
 
-    override suspend fun invoke(input: Pair<List<City>, String>): List<City> {
-        return binarySearchUseCase.invoke(input)
+    override suspend fun invoke(cities: List<City>, prefix: String): List<City> {
+        return binarySearchAlgorithm.search(
+            cities,
+            prefix
+        )
     }
 }
