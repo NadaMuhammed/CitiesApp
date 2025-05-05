@@ -1,7 +1,6 @@
 package com.example.cities.data.local
 
 import android.content.Context
-import android.util.Log
 import com.example.cities.data.dto.CityDTO
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.serialization.builtins.ListSerializer
@@ -18,7 +17,7 @@ class CitiesLocalDataSourceImpl @Inject constructor(
                 .bufferedReader()
                 .use { it.readText() }
 
-            val json = Json{
+            val json = Json {
                 ignoreUnknownKeys = true
             }
 
