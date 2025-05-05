@@ -50,8 +50,7 @@ android {
 
 dependencies {
 
-    // Gson
-    implementation(libs.gson)
+    // Serialization
     implementation(libs.kotlinx.serialization.json)
 
     // Hilt
